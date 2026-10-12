@@ -55,21 +55,21 @@ void loop() {
       digitalWrite(Sensor_LED_Front, LOW);
       delay(2000);
       Serial.println("Parallel to left wall");
-      servoLeft.writeMicroseconds(1450);
-      servoRight.writeMicroseconds(1450);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      delay(20);
+      delay(150);
       servoLeft.writeMicroseconds(1568);
       servoRight.writeMicroseconds(1432);
-      delay(200);
-      servoLeft.writeMicroseconds(1550);
-      servoRight.writeMicroseconds(1550);
-      delay(20);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      delay(150);
       servoLeft.writeMicroseconds(1436);
       servoRight.writeMicroseconds(1558);
-      delay(300);
+      delay(1000);
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       delay(2000);
@@ -83,21 +83,21 @@ void loop() {
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(2000);
       Serial.println("Parallel to right wall");
-      servoLeft.writeMicroseconds(1550);
-      servoRight.writeMicroseconds(1550);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      delay(20);
+      delay(150);
       servoLeft.writeMicroseconds(1568);
       servoRight.writeMicroseconds(1432);
-      delay(500);
-      servoLeft.writeMicroseconds(1450);
-      servoRight.writeMicroseconds(1450);
-      delay(20);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
       servoLeft.writeMicroseconds(1436);
       servoRight.writeMicroseconds(1558);
-      delay(600);
+      delay(1000);
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       delay(2000);
@@ -128,7 +128,7 @@ void loop() {
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(300); // change the delay so it turns properly
+      delay(450); // change the delay so it turns properly
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       delay(2000);
@@ -147,7 +147,7 @@ void loop() {
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(300); // change the delay so it turns properly
+      delay(420); // change the delay so it turns properly
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       delay(2000);
