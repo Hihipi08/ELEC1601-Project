@@ -73,6 +73,12 @@ void loop()
     // put your main code here, to run repeatedly:
     int scenario = 0;
 
+    if(find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() == 12):
+        scenario = 1;
+    
+    if(find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() < 10):
+        scenario = 9;
+
     if(!stopped)
     {
         switch(scenario)
@@ -208,6 +214,25 @@ void loop()
                 delay(2000);
 
             case 9:
+                Serial.println("180 degree turn");
+                servoLeft.writeMicroseconds(1500); //stops for 700ms
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Right, LOW);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(5000);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                servoLeft.writeMicroseconds(1550); //180 degree turn
+                servoRight.writeMicroseconds(1550);
+                delay(1660); //might need to change this value
+                servoLeft.writeMicroseconds(1568); // goes forwards for half a second
+                servoRight.writeMicroseconds(1432);
+                delay(500);
+                servoLeft.writeMicroseconds(1500); //task requires a stop after completion
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
         }
     }
 }
