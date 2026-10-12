@@ -20,9 +20,6 @@ Servo servoRight
   and any values that are used in more than one place
 */
 
-Servo servoLeft;
-Servo servoRight;
-
 int val_right = 0;
 int val_left = 0;
 int LED_G_Left = 8;
@@ -87,6 +84,7 @@ void loop()
                 digitalWrite(Sensor_LED_Left, LOW);
                 digitalWrite(Sensor_LED_Right, LOW);
                 digitalWrite(Sensor_LED_Front, LOW);
+
             case 1: //middle of corridor
                 Serial.println("Forwards");
                 servoLeft.writeMicroseconds(1500); 
@@ -104,9 +102,13 @@ void loop()
                 servoLeft.writeMicroseconds(1500); 
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+
             case 2: //ideal position right turn
+
             case 3: //ideal position left turn
+
             case 4: //dead end
+
             case 5: //left side of corridor parallel
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
@@ -133,6 +135,7 @@ void loop()
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+
             case 6: //right side of corridor parallel
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
@@ -159,8 +162,51 @@ void loop()
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+
             case 7: //left side of corridor pointing at wall
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(5000);
+                Serial.println("30 degrees to left wall");
+                servoLeft.writeMicroseconds(1550); //turn
+                servoRight.writeMicroseconds(1550);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(380); // change the delay so it turns properly
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
+
             case 8: //right side of corridor pointing at wall
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                Serial.println("30 degrees to right wall");
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(1000);
+                digitalWrite(Sensor_LED_Right, LOW);
+                delay(1000);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                delay(1000);
+                digitalWrite(Sensor_LED_Right, LOW);
+                delay(1000);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                delay(1000);
+                servoLeft.writeMicroseconds(1450); //turn
+                servoRight.writeMicroseconds(1450);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(400); // change the delay so it turns properly
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
+
             case 9:
         }
     }
