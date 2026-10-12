@@ -1,6 +1,5 @@
 #include <Servo.h>
 
-// just inits
 Servo servoLeft;
 Servo servoRight;
 
@@ -32,8 +31,7 @@ void setup()
 
   servoLeft.attach(13);
   servoRight.attach(12);
-
-  // even more inits
+  
   pinMode(IR_LED_Right, OUTPUT);
   pinMode(IR_LED_Left, OUTPUT);
   pinMode(IR_LED_Front, OUTPUT);
@@ -49,47 +47,34 @@ void setup()
 }
 
 void loop() {
-    // scenario 5
     if (find_distance_left() <= 4 && find_distance_front() == 12 && 8 <= find_distance_right() < 10) { //left parallel
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      
       delay(2000);
-      
       Serial.println("Parallel to left wall");
       servoLeft.writeMicroseconds(1450);
       servoRight.writeMicroseconds(1450);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      
       delay(20);
-      
       servoLeft.writeMicroseconds(1568);
       servoRight.writeMicroseconds(1432);
-      
       delay(200);
-      
       servoLeft.writeMicroseconds(1550);
       servoRight.writeMicroseconds(1550);
-      
       delay(20);
-      
       servoLeft.writeMicroseconds(1436);
       servoRight.writeMicroseconds(1558);
-      
       delay(300);
-      
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
-      
       delay(2000);
     }
 
-    // scenario 6
     else if (6 <= find_distance_left() < 11 && find_distance_front() == 12 && find_distance_right() <= 4) { //right parallel
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
@@ -118,7 +103,6 @@ void loop() {
       delay(2000);
     }
 
-    // scenario 8
     else if (find_distance_right() <= 4 && find_distance_front() <= 12 && find_distance_left() == 11) { //30 degree to right wall
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
@@ -144,13 +128,12 @@ void loop() {
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(200); // change the delay so it turns properly
+      delay(300); // change the delay so it turns properly
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       delay(2000);
     }
 
-    // scenario 7
     else if (find_distance_left() <= 4 && find_distance_front() <= 12 && find_distance_right() >= 8) { //30 degree to left wall
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
@@ -164,13 +147,12 @@ void loop() {
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(200); // change the delay so it turns properly
+      delay(300); // change the delay so it turns properly
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       delay(2000);
     }
 
-    // scenario 1
     else if (find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() == 12) //forwards
     {
       Serial.println("Forwards");
@@ -185,6 +167,7 @@ void loop() {
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
+      delay(2000);
       servoLeft.writeMicroseconds(1500); 
       servoRight.writeMicroseconds(1500);
       delay(2000);
@@ -200,7 +183,7 @@ void loop() {
     digitalWrite(Sensor_LED_Front, LOW);
   }
     
-  // scenario 3
+  
   else if (find_distance_left() == 11 && find_distance_right() < 10 && find_distance_front() <= 12) //left turn
     {
       Serial.println("left turn");
@@ -211,21 +194,20 @@ void loop() {
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(2000);
-      servoLeft.writeMicroseconds(1550); //turn
-      servoRight.writeMicroseconds(1550);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(830);
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
-      delay(500);
+      delay(2000);
       servoLeft.writeMicroseconds(1500); //task requires a stop after completion
       servoRight.writeMicroseconds(1500);
       delay(2000);
     }
 
-  // scenario 2
   else if (find_distance_left() < 11 && find_distance_right() == 10 && find_distance_front() <= 12) //right turn
     {
       Serial.println("right turn");
@@ -235,21 +217,20 @@ void loop() {
       digitalWrite(Sensor_LED_Right, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(2000);
-      servoLeft.writeMicroseconds(1450); //turn
-      servoRight.writeMicroseconds(1450);
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(780); //might need to change this value
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
-      delay(500);
+      delay(2000);
       servoLeft.writeMicroseconds(1500); //task requires a stop after completion
       servoRight.writeMicroseconds(1500);
       delay(2000);
     }
 
-    // scenario 4
     // Dead end, does 180 turn then moves forward
     if (find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() < 10)
     {
@@ -275,7 +256,6 @@ void loop() {
     }
 }
 
-// tbh still dont get how these "findDistance" functionss works but i'll get to it -hiu
 int find_distance_left()
 {
   tone(IR_LED_Left, 65000);
