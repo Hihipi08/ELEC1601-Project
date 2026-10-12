@@ -108,7 +108,57 @@ void loop()
             case 3: //ideal position left turn
             case 4: //dead end
             case 5: //left side of corridor parallel
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(5000);
+                Serial.println("Parallel to left wall");
+                servoLeft.writeMicroseconds(1550);
+                servoRight.writeMicroseconds(1550);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(150);
+                servoLeft.writeMicroseconds(1568);
+                servoRight.writeMicroseconds(1432);
+                delay(1000);
+                servoLeft.writeMicroseconds(1450);
+                servoRight.writeMicroseconds(1450);
+                delay(150);
+                servoLeft.writeMicroseconds(1436);
+                servoRight.writeMicroseconds(1558);
+                delay(1000);
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
             case 6: //right side of corridor parallel
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Right, LOW);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(5000);
+                Serial.println("Parallel to right wall");
+                servoLeft.writeMicroseconds(1450);
+                servoRight.writeMicroseconds(1450);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(150);
+                servoLeft.writeMicroseconds(1568);
+                servoRight.writeMicroseconds(1432);
+                delay(1000);
+                servoLeft.writeMicroseconds(1550);
+                servoRight.writeMicroseconds(1550);
+                delay(150);
+                servoLeft.writeMicroseconds(1436);
+                servoRight.writeMicroseconds(1558);
+                delay(1000);
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
             case 7: //left side of corridor pointing at wall
             case 8: //right side of corridor pointing at wall
             case 9:
