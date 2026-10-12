@@ -275,7 +275,7 @@ void loop() {
     }
 }
 
-// tbh still dont get how this works but i'll get to it -hiu
+// tbh still dont get how these "findDistance" functionss works but i'll get to it -hiu
 int find_distance_left()
 {
   tone(IR_LED_Left, 65000);
