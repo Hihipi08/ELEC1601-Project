@@ -81,7 +81,29 @@ void loop()
         switch(scenario)
         {
             case 0: //Unknown scenario
+                Serial.println("stopped");
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Right, LOW);
+                digitalWrite(Sensor_LED_Front, LOW);
             case 1: //middle of corridor
+                Serial.println("Forwards");
+                servoLeft.writeMicroseconds(1500); 
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(5000);
+                servoLeft.writeMicroseconds(1568); 
+                servoRight.writeMicroseconds(1432);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(1250);
+                servoLeft.writeMicroseconds(1500); 
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
             case 2: //ideal position right turn
             case 3: //ideal position left turn
             case 4: //dead end
@@ -90,7 +112,6 @@ void loop()
             case 7: //left side of corridor pointing at wall
             case 8: //right side of corridor pointing at wall
             case 9:
-            case 10:
         }
     }
 }
