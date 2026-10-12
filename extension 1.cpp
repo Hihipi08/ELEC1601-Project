@@ -46,13 +46,14 @@ void setup()
 }
 
 void loop() {
+  
     if (find_distance_left() <= 4 && find_distance_front() == 12 && 8 <= find_distance_right() < 10) { //left parallel
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      delay(5000);
+      delay(1000);
       Serial.println("Parallel to left wall");
       servoLeft.writeMicroseconds(1550);
       servoRight.writeMicroseconds(1550);
@@ -69,9 +70,6 @@ void loop() {
       servoLeft.writeMicroseconds(1436);
       servoRight.writeMicroseconds(1558);
       delay(1000);
-      servoLeft.writeMicroseconds(1500);
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 
     else if (6 <= find_distance_left() < 11 && find_distance_front() == 12 && find_distance_right() <= 4) { //right parallel
@@ -80,7 +78,7 @@ void loop() {
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(5000);
+      delay(1000);
       Serial.println("Parallel to right wall");
       servoLeft.writeMicroseconds(1450);
       servoRight.writeMicroseconds(1450);
@@ -97,9 +95,6 @@ void loop() {
       servoLeft.writeMicroseconds(1436);
       servoRight.writeMicroseconds(1558);
       delay(1000);
-      servoLeft.writeMicroseconds(1500);
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 
     else if (find_distance_right() <= 4 && find_distance_front() <= 12 && find_distance_left() == 11) { //30 degree to right wall
@@ -110,23 +105,12 @@ void loop() {
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, LOW);
       delay(1000);
-      digitalWrite(Sensor_LED_Right, LOW);
-      delay(1000);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      delay(1000);
-      digitalWrite(Sensor_LED_Right, LOW);
-      delay(1000);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      delay(1000);
       servoLeft.writeMicroseconds(1450); //turn
       servoRight.writeMicroseconds(1450);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(400); // change the delay so it turns properly
-      servoLeft.writeMicroseconds(1500);
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 
     else if (find_distance_left() <= 4 && find_distance_front() <= 12 && find_distance_right() >= 8) { //30 degree to left wall
@@ -135,7 +119,7 @@ void loop() {
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(5000);
+      delay(1000);
       Serial.println("30 degrees to left wall");
       servoLeft.writeMicroseconds(1550); //turn
       servoRight.writeMicroseconds(1550);
@@ -143,29 +127,16 @@ void loop() {
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, HIGH);
       delay(380); // change the delay so it turns properly
-      servoLeft.writeMicroseconds(1500);
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 
     else if (find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() == 12) //forwards
     {
       Serial.println("Forwards");
-      servoLeft.writeMicroseconds(1500); 
-      servoRight.writeMicroseconds(1500);
-      digitalWrite(Sensor_LED_Left, LOW);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Front, LOW);
-      delay(5000);
       servoLeft.writeMicroseconds(1568); 
       servoRight.writeMicroseconds(1432);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      delay(1250);
-      servoLeft.writeMicroseconds(1500); 
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 
     else if (find_distance_left() == 11 && find_distance_right() == 10 && find_distance_front() >= 10) //nothing detected stop
@@ -188,7 +159,7 @@ void loop() {
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(5000);
+      delay(1000);
       servoLeft.writeMicroseconds(1450); //turn
       servoRight.writeMicroseconds(1450);
       digitalWrite(Sensor_LED_Right, HIGH);
@@ -198,20 +169,18 @@ void loop() {
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
       delay(2000);
-      servoLeft.writeMicroseconds(1500); //task requires a stop after completion
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 
   else if (find_distance_left() < 11 && find_distance_right() == 10 && find_distance_front() <= 12) //right turn
     {
       Serial.println("right turn");
+      delay(900);
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       digitalWrite(Sensor_LED_Left, LOW);
       digitalWrite(Sensor_LED_Right, LOW);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(5000);
+      delay(1000);
       servoLeft.writeMicroseconds(1550); //turn
       servoRight.writeMicroseconds(1550);
       digitalWrite(Sensor_LED_Left, HIGH);
@@ -220,9 +189,6 @@ void loop() {
       delay(780); //might need to change this value
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
-      delay(2000);
-      servoLeft.writeMicroseconds(1500); //task requires a stop after completion
-      servoRight.writeMicroseconds(1500);
       delay(2000);
     }
 
@@ -235,7 +201,7 @@ void loop() {
       digitalWrite(Sensor_LED_Right, LOW);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, LOW);
-      delay(5000);
+      delay(1000);
       digitalWrite(Sensor_LED_Right, HIGH);
       digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, HIGH);
@@ -245,9 +211,6 @@ void loop() {
       servoLeft.writeMicroseconds(1568); // goes forwards for half a second
       servoRight.writeMicroseconds(1432);
       delay(500);
-      servoLeft.writeMicroseconds(1500); //task requires a stop after completion
-      servoRight.writeMicroseconds(1500);
-      delay(2000);
     }
 }
 
