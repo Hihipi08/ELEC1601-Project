@@ -20,11 +20,55 @@ Servo servoRight
   and any values that are used in more than one place
 */
 
+Servo servoLeft;
+Servo servoRight;
+
+int val_right = 0;
+int val_left = 0;
+int LED_G_Left = 8;
+int LED_G_Right = 4;
+int LED_R_Left = 9;
+int LED_R_Right = 5;
+int IR_LED_Left = 10;
+int Sensor_Left = 11;
+int IR_LED_Front = 6;
+int Sensor_Front = 7;
+int IR_LED_Right = 2;
+int Sensor_Right = 3;
+int ir_valL = 0;
+int ir_valF = 0;
+int ir_valR = 0;
+int distanceL = 0;
+int distanceF = 0;
+int distanceR = 0;
+int Sensor_LED_Left = A2;
+int Sensor_LED_Front = A1;
+int Sensor_LED_Right = A0;
+
 int stopped=0;
 
 void setup()
 {
-    Serial.begin(9600);
+  servoLeft.attach(13);
+  servoRight.attach(12);
+  servoLeft.writeMicroseconds(1500);
+  servoRight.writeMicroseconds(1500);
+
+  // setup all input pins
+  pinMode(Sensor_Left, INPUT);
+  pinMode(Sensor_Right, INPUT);
+  pinMode(Sensor_Front, INPUT);
+
+  // setup all output pins
+  pinMode(IR_LED_Right, OUTPUT);
+  pinMode(IR_LED_Left, OUTPUT);
+  pinMode(IR_LED_Front, OUTPUT);
+  pinMode(Sensor_LED_Right, OUTPUT);
+  pinMode(Sensor_LED_Left, OUTPUT);
+  pinMode(Sensor_LED_Front, OUTPUT);
+
+  // setup serial port for debugging purposes if desired
+  Serial.begin(9600);
 }
 
 void loop()
