@@ -125,6 +125,21 @@ void loop() {
 
 
 
+    // short long dead end distinguish thing
+    // how
+    /*
+        ohj maybe we can make the robot to 
+        right turn a little bit and when its turning right (while moving forward yk), so maybe like a very short delay for the movve_forward servos function thing so that when it stopps we can check if it can detect anything in front of it
+
+        if it cant, then its the long dead end, aka the finish line
+
+        if it can detect, then its the short dead end and it would want to turn around/ use the dead end case
+    */
+
+
+
+
+
 
 
 
