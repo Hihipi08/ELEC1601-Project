@@ -28,6 +28,7 @@ int Sensor_LED_Right = A0;
 //changes
 bool rightAvailable = false;
 bool leftAvailable = false;
+bool shorterEnd = false;
 
 void setup()
 {
@@ -50,6 +51,10 @@ void setup()
 }
 
 void loop() {
+
+
+
+
 
     //changes
     if (find_distance_left() == 11 && find_distance_right() < 10 && find_distance_front() <= 12)
@@ -75,7 +80,20 @@ void loop() {
       rightAvailable = false;
       leftAvailable = false;
     }
+
+    //changes
+    // short long dead end distinguishing
+    /*
+      we might need to make the delays in turn_right() or for forward ones smaller, because we want to be able to check whether or not the sensor can sense a dead end from the point of T section.
+
+      if it can sense a dead end, then shorterEnd = true;
+      then it can just do the deadend scenario movement and then just move forward until it stops at a deadend (we might need to make deadendV2 where instead of turning around it stops, because it'll be at the finish line already)
+    */
+
     
+
+
+
     //changes
     /*
     if (find_distance_left() == 11 && find_distance_right() < 10 && find_distance_front() <= 12) //left turn
