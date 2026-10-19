@@ -12,7 +12,7 @@ Ross Hutton 2026
 #include <Servo.h>
 
 Servo servoLeft;
-Servo servoRight
+Servo servoRight;
 
 // Define all pins
 
@@ -73,11 +73,62 @@ void loop()
     // put your main code here, to run repeatedly:
     int scenario = 0;
 
-    if(find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() == 12):
+    if(find_distance_left() != 11 && find_distance_right() != 10 && (find_distance_left() - find_distance_right() >= -3 && find_distance_left() - find_distance_right() <= 3) && find_distance_front() == 12)
+    {
         scenario = 1;
+    }
     
-    if(find_distance_left() != 11 && find_distance_right() != 10 && -3 <= find_distance_left() - find_distance_right() <= 3 && find_distance_front() < 10):
-        scenario = 9;
+    if(find_distance_left() != 11 && find_distance_right() != 10 && (find_distance_left() - find_distance_right() >= -3 && find_distance_left() - find_distance_right() <= 3) && find_distance_front() < 10)
+    {
+        scenario = 4;
+    }
+
+    // CLASSIFY THE SENSOR READINGS INTO THE SCENARIOS USED BY THE SWITCH
+    int leftDistance = find_distance_left();
+    int frontDistance = find_distance_front();
+    int rightDistance = find_distance_right();
+    int difference = leftDistance - rightDistance;
+
+    if(leftDistance != 11 && rightDistance != 10 && difference >= -3 && difference <= 3 && frontDistance < 10)
+    {
+        scenario = 4;
+    }
+    else if(leftDistance <= 4 && frontDistance == 12 && rightDistance >= 8 && rightDistance < 10)
+    {
+        scenario = 5;
+    }
+    else if(leftDistance >= 6 && leftDistance < 11 && frontDistance == 12 && rightDistance <= 4)
+    {
+        scenario = 6;
+    }
+    else if(rightDistance <= 4 && frontDistance <= 12 && leftDistance == 11)
+    {
+        scenario = 8;
+    }
+    else if(leftDistance <= 4 && frontDistance <= 12 && rightDistance >= 8)
+    {
+        scenario = 7;
+    }
+    else if(leftDistance != 11 && rightDistance != 10 && difference >= -3 && difference <= 3 && frontDistance == 12)
+    {
+        scenario = 1;
+    }
+    else if(leftDistance == 11 && rightDistance == 10 && frontDistance >= 10)
+    {
+        scenario = 0;
+    }
+    else if(leftDistance == 11 && rightDistance < 10 && frontDistance <= 12)
+    {
+        scenario = 3;
+    }
+    else if(leftDistance < 11 && rightDistance == 10 && frontDistance <= 12)
+    {
+        scenario = 2;
+    }
+    else
+    {
+        scenario = 0;
+    }
 
     if(!stopped)
     {
@@ -90,6 +141,7 @@ void loop()
                 digitalWrite(Sensor_LED_Left, LOW);
                 digitalWrite(Sensor_LED_Right, LOW);
                 digitalWrite(Sensor_LED_Front, LOW);
+                break;
 
             case 1: //middle of corridor
                 Serial.println("Forwards");
@@ -108,12 +160,78 @@ void loop()
                 servoLeft.writeMicroseconds(1500); 
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+                break;
 
             case 2: //ideal position right turn
+                Serial.println("right turn");
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Right, LOW);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(5000);
+                servoLeft.writeMicroseconds(1550); //TURN
+                servoRight.writeMicroseconds(1550);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Right, LOW);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(780); //MIGHT NEED TO CHANGE THIS VALUE
+                servoLeft.writeMicroseconds(1568); //MOVES FORWARDS BEFORE CHECKING WHERE IT IS AGAIN
+                servoRight.writeMicroseconds(1432);
+                delay(2000);
+                servoLeft.writeMicroseconds(1500); //TASK REQUIRES A STOP AFTER COMPLETION
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
+                break;
 
             case 3: //ideal position left turn
+                Serial.println("left turn");
+                delay(900);
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(5000);
+                servoLeft.writeMicroseconds(1450); //TURN
+                servoRight.writeMicroseconds(1450);
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, LOW);
+                digitalWrite(Sensor_LED_Front, HIGH);
+                delay(830);
+                servoLeft.writeMicroseconds(1568); //MOVES FORWARDS BEFORE CHECKING WHERE IT IS AGAIN
+                servoRight.writeMicroseconds(1432);
+                delay(2000);
+                servoLeft.writeMicroseconds(1500); //TASK REQUIRES A STOP AFTER COMPLETION
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
+                break;
 
             case 4: //dead end
+                Serial.println("180 degree turn");
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                digitalWrite(Sensor_LED_Right, LOW);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Front, LOW);
+                delay(5000);
+
+                digitalWrite(Sensor_LED_Right, HIGH);
+                digitalWrite(Sensor_LED_Left, HIGH);
+                digitalWrite(Sensor_LED_Front, HIGH);
+
+                servoLeft.writeMicroseconds(1550);
+                servoRight.writeMicroseconds(1550);
+                delay(1660);
+
+                servoLeft.writeMicroseconds(1568);
+                servoRight.writeMicroseconds(1432);
+                delay(500);
+
+                servoLeft.writeMicroseconds(1500);
+                servoRight.writeMicroseconds(1500);
+                delay(2000);
+                break;
 
             case 5: //left side of corridor parallel
                 servoLeft.writeMicroseconds(1500);
@@ -141,6 +259,7 @@ void loop()
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+                break;
 
             case 6: //right side of corridor parallel
                 servoLeft.writeMicroseconds(1500);
@@ -168,6 +287,7 @@ void loop()
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+                break;
 
             case 7: //left side of corridor pointing at wall
                 servoLeft.writeMicroseconds(1500);
@@ -177,7 +297,7 @@ void loop()
                 digitalWrite(Sensor_LED_Front, HIGH);
                 delay(5000);
                 Serial.println("30 degrees to left wall");
-                servoLeft.writeMicroseconds(1550); //turn
+                servoLeft.writeMicroseconds(1550); //TURN
                 servoRight.writeMicroseconds(1550);
                 digitalWrite(Sensor_LED_Right, HIGH);
                 digitalWrite(Sensor_LED_Left, HIGH);
@@ -186,6 +306,7 @@ void loop()
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+                break;
 
             case 8: //right side of corridor pointing at wall
                 servoLeft.writeMicroseconds(1500);
@@ -203,7 +324,7 @@ void loop()
                 delay(1000);
                 digitalWrite(Sensor_LED_Right, HIGH);
                 delay(1000);
-                servoLeft.writeMicroseconds(1450); //turn
+                servoLeft.writeMicroseconds(1450); //TURN
                 servoRight.writeMicroseconds(1450);
                 digitalWrite(Sensor_LED_Right, HIGH);
                 digitalWrite(Sensor_LED_Left, LOW);
@@ -212,27 +333,10 @@ void loop()
                 servoLeft.writeMicroseconds(1500);
                 servoRight.writeMicroseconds(1500);
                 delay(2000);
+                break;
 
             case 9:
-                Serial.println("180 degree turn");
-                servoLeft.writeMicroseconds(1500); //stops for 700ms
-                servoRight.writeMicroseconds(1500);
-                digitalWrite(Sensor_LED_Right, LOW);
-                digitalWrite(Sensor_LED_Left, HIGH);
-                digitalWrite(Sensor_LED_Front, LOW);
-                delay(5000);
-                digitalWrite(Sensor_LED_Right, HIGH);
-                digitalWrite(Sensor_LED_Left, HIGH);
-                digitalWrite(Sensor_LED_Front, HIGH);
-                servoLeft.writeMicroseconds(1550); //180 degree turn
-                servoRight.writeMicroseconds(1550);
-                delay(1660); //might need to change this value
-                servoLeft.writeMicroseconds(1568); // goes forwards for half a second
-                servoRight.writeMicroseconds(1432);
-                delay(500);
-                servoLeft.writeMicroseconds(1500); //task requires a stop after completion
-                servoRight.writeMicroseconds(1500);
-                delay(2000);
+                break;
         }
     }
 }
