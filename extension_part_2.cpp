@@ -49,6 +49,33 @@ void setup()
 
 void loop() {
   
+
+
+
+
+
+    //right turn
+    if (rightAvailable && !leftAvailable)
+    {
+        Serial.println("right turn");
+      delay(900);
+      servoLeft.writeMicroseconds(1500);
+      servoRight.writeMicroseconds(1500);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(780); //might need to change this value
+      servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+      servoRight.writeMicroseconds(1432);
+      delay(2000);
+    }
+
     // if theres both right and left opening, then choose the right opening
     if (leftAvailable && rightAvailable)
     {
@@ -70,6 +97,39 @@ void loop() {
       servoRight.writeMicroseconds(1432);
       delay(2000);
     }
+
+
+    // oke now what if theres no right opening but theres left opening, then we need to enable left turn
+    elif (leftAvailable && !rightAvailable)
+    {
+              Serial.println("left turn");
+      delay(900);
+      servoLeft.writeMicroseconds(1500);
+      servoRight.writeMicroseconds(1500);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(830);
+      servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+      servoRight.writeMicroseconds(1432);
+      delay(2000);
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     if (find_distance_left() <= 4 && find_distance_front() == 12 && 8 <= find_distance_right() < 10) { //left parallel
