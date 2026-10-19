@@ -25,6 +25,10 @@ int Sensor_LED_Left = A2;
 int Sensor_LED_Front = A1;
 int Sensor_LED_Right = A0;
 
+//changes
+bool rightAvailable = false;
+bool leftAvailable = false;
+
 void setup()
 {
   Serial.begin(9600);
@@ -47,29 +51,54 @@ void setup()
 
 void loop() {
 
+    if (find_distance_left() == 11 && find_distance_right() < 10 && find_distance_front() <= 12)
+    {
+      leftAvailable = true;
+    }
+    if (find_distance_left() < 11 && find_distance_right() == 10 && find_distance_front() <= 12)
+    {
+      rightAvailable = true;
+    }
+
+    // right and left turns, but it will prioritize right turns (hugging right wall)
+    if ((leftAvailable && rightAvailable) or (!leftAvailable && rightAvailable))
+    {
+      turn_right();
+      rightAvailable = false;
+      leftAvailable = false;
+    }
+    else if (leftAvailable && !rightAvailable)
+    {
+      turn_left();
+      rightAvailable = false;
+      leftAvailable = false;
+    }
+    
+    /*
     if (find_distance_left() == 11 && find_distance_right() < 10 && find_distance_front() <= 12) //left turn
     {
-      Serial.println("left turn");
-      delay(900);
-      servoLeft.writeMicroseconds(1500);
+      Serial.println("180 degree turn");
+      servoLeft.writeMicroseconds(1500); //stops for 700ms
       servoRight.writeMicroseconds(1500);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Left, LOW);
-      digitalWrite(Sensor_LED_Front, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
       delay(1000);
-      servoLeft.writeMicroseconds(1450); //turn
-      servoRight.writeMicroseconds(1450);
       digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Left, HIGH);
       digitalWrite(Sensor_LED_Front, HIGH);
-      delay(830);
-      servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+      servoLeft.writeMicroseconds(1550); //180 degree turn
+      servoRight.writeMicroseconds(1550);
+      delay(1660); //might need to change this value
+      servoLeft.writeMicroseconds(1568); // goes forwards for half a second
       servoRight.writeMicroseconds(1432);
-      delay(2000);
+      delay(500);
     }
+    */
 
   else if (find_distance_left() < 11 && find_distance_right() == 10 && find_distance_front() <= 12) //right turn
     {
+      /*
       Serial.println("right turn");
       delay(900);
       servoLeft.writeMicroseconds(1500);
@@ -87,6 +116,7 @@ void loop() {
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
       delay(2000);
+      */
     }
   
     else if (find_distance_left() <= 4 && find_distance_front() == 12 && 8 <= find_distance_right() < 10) { //left adjust
@@ -183,6 +213,58 @@ void loop() {
     }
 }
 
+
+
+
+
+// turn_x functions:
+void turn_left()
+{
+  Serial.println("left turn");
+  delay(900);
+  servoLeft.writeMicroseconds(1500);
+  servoRight.writeMicroseconds(1500);
+  digitalWrite(Sensor_LED_Right, HIGH);
+  digitalWrite(Sensor_LED_Left, LOW);
+  digitalWrite(Sensor_LED_Front, HIGH);
+  delay(1000);
+  servoLeft.writeMicroseconds(1450); //turn
+  servoRight.writeMicroseconds(1450);
+  digitalWrite(Sensor_LED_Right, HIGH);
+  digitalWrite(Sensor_LED_Left, LOW);
+  digitalWrite(Sensor_LED_Front, HIGH);
+  delay(830);
+  servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+  servoRight.writeMicroseconds(1432);
+  delay(2000);
+}
+
+void turn_right()
+{
+  Serial.println("right turn");
+  delay(900);
+  servoLeft.writeMicroseconds(1500);
+  servoRight.writeMicroseconds(1500);
+  digitalWrite(Sensor_LED_Left, LOW);
+  digitalWrite(Sensor_LED_Right, LOW);
+  digitalWrite(Sensor_LED_Front, HIGH);
+  delay(1000);
+  servoLeft.writeMicroseconds(1550); //turn
+  servoRight.writeMicroseconds(1550);
+  digitalWrite(Sensor_LED_Left, HIGH);
+  digitalWrite(Sensor_LED_Right, LOW);
+  digitalWrite(Sensor_LED_Front, HIGH);
+  delay(780); //might need to change this value
+  servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+  servoRight.writeMicroseconds(1432);
+  delay(2000);
+}
+
+
+
+
+
+// find_distance_x functions:
 int find_distance_left()
 {
   tone(IR_LED_Left, 65000);
