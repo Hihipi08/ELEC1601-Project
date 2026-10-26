@@ -56,7 +56,7 @@ void loop() {
     if (distance_left == 11 && distance_right < 10 && distance_front <= 12) //left turn
     {
       Serial.println("left turn");
-      delay(900);
+      delay(1000);
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       digitalWrite(Sensor_LED_Right, HIGH);
@@ -77,7 +77,7 @@ void loop() {
   else if (distance_left < 11 && distance_right == 10 && distance_front <= 12) //right turn
     {
       Serial.println("right turn");
-      delay(900);
+      delay(1025);
       servoLeft.writeMicroseconds(1500);
       servoRight.writeMicroseconds(1500);
       digitalWrite(Sensor_LED_Left, LOW);
@@ -113,38 +113,6 @@ void loop() {
         delay(15);
     }
 
-
-    else if (distance_right <= 4 && distance_front <= 12 && distance_left == 11) { //30 degree to right wall
-      servoLeft.writeMicroseconds(1500);
-      servoRight.writeMicroseconds(1500);
-      Serial.println("30 degrees to right wall");
-      digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Left, LOW);
-      digitalWrite(Sensor_LED_Front, LOW);
-      delay(1000);
-      servoLeft.writeMicroseconds(1450); //turn
-      servoRight.writeMicroseconds(1450);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Left, LOW);
-      digitalWrite(Sensor_LED_Front, HIGH);
-      delay(400); // change the delay so it turns properly
-    }
-
-    else if (distance_left <= 4 && distance_front <= 12 && distance_right >= 8) { //30 degree to left wall
-      servoLeft.writeMicroseconds(1500);
-      servoRight.writeMicroseconds(1500);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Left, HIGH);
-      digitalWrite(Sensor_LED_Front, HIGH);
-      delay(1000);
-      Serial.println("30 degrees to left wall");
-      servoLeft.writeMicroseconds(1550); //turn
-      servoRight.writeMicroseconds(1550);
-      digitalWrite(Sensor_LED_Right, HIGH);
-      digitalWrite(Sensor_LED_Left, HIGH);
-      digitalWrite(Sensor_LED_Front, HIGH);
-      delay(380); // change the delay so it turns properly
-    }
 
     else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12) //forwards
     {
