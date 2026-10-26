@@ -28,6 +28,7 @@ int distance_left = 0;
 int distance_right = 0;
 int distance_front = 0;
 int count = 0;
+int left = 1;
 
 void setup()
 {
@@ -48,6 +49,7 @@ void setup()
   servoLeft.writeMicroseconds(1500);
   servoRight.writeMicroseconds(1500);
   count = 0;
+  left = 0;
 }
 
 void loop() {
@@ -162,7 +164,7 @@ void loop() {
     }
 
 
-    else if (distance_left == 11 && distance_right < 10 && distance_front <= 12 && count == 1) //left turn
+    else if (distance_left == 11 && distance_right < 10 && distance_front <= 12 && count >= 1) //left turn
     {
       Serial.println("left turn");
       delay(1000);
@@ -181,9 +183,10 @@ void loop() {
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
       delay(2000);
+      left += 1;
     }
 
-  else if (distance_left < 11 && distance_right == 10 && distance_front <= 12 && count == 1) //right turn
+  else if (distance_left < 11 && distance_right == 10 && distance_front <= 12 && count >= 1) //right turn
     {
       Serial.println("right turn");
       delay(1025);
@@ -202,9 +205,10 @@ void loop() {
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
       delay(2000);
+      left = 0;
     }
   
-    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && count == 1) { //right adjust
+    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && left == 0) { //right adjust
         digitalWrite(Sensor_LED_Right, HIGH);
         digitalWrite(Sensor_LED_Left, LOW);
         digitalWrite(Sensor_LED_Front, LOW);
@@ -213,7 +217,7 @@ void loop() {
         delay(15);
     }
     
-    else if (distance_left <= 2 && distance_front == 12 && 8 <= distance_right < 10 && count == 1) { //left adjust
+    else if (distance_left <= 2 && distance_front == 12 && 8 <= distance_right < 10 && left == 0) { //left adjust
         digitalWrite(Sensor_LED_Right, LOW);
         digitalWrite(Sensor_LED_Left, HIGH);
         digitalWrite(Sensor_LED_Front, LOW);
@@ -222,7 +226,7 @@ void loop() {
         delay(15);
     }
 
-    else if (distance_left <= 2.5 && distance_front == 12 && 6 <= distance_right < 10 && count == 2) { //left adjust
+    else if (distance_left <= 2.5 && distance_front == 12 && 6 <= distance_right < 10 && left > 0) { //left adjust
         digitalWrite(Sensor_LED_Right, LOW);
         digitalWrite(Sensor_LED_Left, HIGH);
         digitalWrite(Sensor_LED_Front, LOW);
@@ -231,7 +235,7 @@ void loop() {
         delay(15);
     }
     
-    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && count == 2) { //right adjust
+    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && left > 0) { //right adjust
         digitalWrite(Sensor_LED_Right, HIGH);
         digitalWrite(Sensor_LED_Left, LOW);
         digitalWrite(Sensor_LED_Front, LOW);
@@ -338,8 +342,6 @@ void loop() {
       servoRight.writeMicroseconds(1500);
       delay(10000);
     }
-
-    else
 }
 
 int find_distance_left()
