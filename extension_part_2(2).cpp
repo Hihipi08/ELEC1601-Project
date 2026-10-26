@@ -68,10 +68,16 @@ void loop() {
 
     //changes
     // right and left turns, but it will prioritize right turns (hugging right wall)
-    if ((leftAvailable && rightAvailable) or (!leftAvailable && rightAvailable))
+    if (leftAvailable && rightAvailable)
     {
       turn_right();
       check_end();
+      rightAvailable = false;
+      leftAvailable = false;
+    }
+    else if (!leftAvailable && rightAvailable)
+    {
+      turn_right();
       rightAvailable = false;
       leftAvailable = false;
     }
@@ -261,10 +267,14 @@ void turn_left()
   digitalWrite(Sensor_LED_Left, LOW);
   digitalWrite(Sensor_LED_Front, HIGH);
   delay(830);
-  servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
-  servoRight.writeMicroseconds(1432);
+  //servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+  //servoRight.writeMicroseconds(1432);
   delay(2000);
 }
+
+/*
+we dont want the turn left and right to also move forward at the end bcs we want to check whether or not (if its in a T scenario) the right side is the short/long dead end
+*/
 
 void turn_right()
 {
@@ -282,8 +292,8 @@ void turn_right()
   digitalWrite(Sensor_LED_Right, LOW);
   digitalWrite(Sensor_LED_Front, HIGH);
   delay(780); //might need to change this value
-  servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
-  servoRight.writeMicroseconds(1432);
+  //servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+  //servoRight.writeMicroseconds(1432);
   delay(2000);
 }
 
