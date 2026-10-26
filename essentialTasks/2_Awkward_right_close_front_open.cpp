@@ -152,6 +152,55 @@ void loop() {
       count += 1;
     }
 
+    else if (find_distance_right() <= 6 && find_distance_front() == 12 && find_distance_left() == 11 && count == 0) { //30 degree to right wall
+      Serial.println("30 degrees to right wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, LOW);
+      digitalWrite(Sensor_LED_Right, LOW);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(340); // change the delay so it turns properly
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(1000);
+      count += 1;
+    }
+
+    else if (find_distance_left() <= 4 && find_distance_front() == 12 && find_distance_right() >= 8 && count == 0) { //30 degree to left wall
+      Serial.println("30 degrees to left wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      Serial.println("30 degrees to left wall");
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(320); // change the delay so it turns properly
+      count += 1;
+    }
+
+
     else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12 && count == 0) //forwards
     {
       Serial.println("Forwards");
