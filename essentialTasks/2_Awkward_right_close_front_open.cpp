@@ -3,398 +3,526 @@
 Servo servoLeft;
 Servo servoRight;
 
-// Variables
 int val_right = 0;
 int val_left = 0;
-
-// LEDs
-int LED_R_Left = 8;
-int LED_R_Right = 4;
-
-// Sensors
+int LED_G_Left = 8;
+int LED_G_Right = 4;
+int LED_R_Left = 9;
+int LED_R_Right = 5;
 int IR_LED_Left = 10;
 int Sensor_Left = 11;
-
 int IR_LED_Front = 6;
 int Sensor_Front = 7;
-
 int IR_LED_Right = 2;
 int Sensor_Right = 3;
-
-// Sensor LEDs
-int Sensor_LED_Left = A2;
-int Sensor_LED_Front = A1;
-int Sensor_LED_Right = A0;
-
-// IR values
 int ir_valL = 0;
 int ir_valF = 0;
 int ir_valR = 0;
-
-// Distance variables
 int distanceL = 0;
 int distanceF = 0;
 int distanceR = 0;
-
+int Sensor_LED_Left = A2;
+int Sensor_LED_Front = A1;
+int Sensor_LED_Right = A0;
+int distance_left = 0;
+int distance_right = 0;
+int distance_front = 0;
+int count = 0;
 
 void setup()
 {
-    servoLeft.attach(13);
-    servoRight.attach(12);
+  Serial.begin(9600);
 
-    // IR LEDs
-    pinMode(IR_LED_Right, OUTPUT);
-    pinMode(IR_LED_Left, OUTPUT);
-    pinMode(IR_LED_Front, OUTPUT);
-
-    // IR sensors
-    pinMode(Sensor_Left, INPUT);
-    pinMode(Sensor_Right, INPUT);
-    pinMode(Sensor_Front, INPUT);
-
-    // LEDs
-    pinMode(LED_R_Right, OUTPUT);
-    pinMode(LED_R_Left, OUTPUT);
-
-    // Sensor LEDs
-    pinMode(Sensor_LED_Left, OUTPUT);
-    pinMode(Sensor_LED_Front, OUTPUT);
-    pinMode(Sensor_LED_Right, OUTPUT);
-
-    // Start servos stopped
-    servoLeft.writeMicroseconds(1500);
-    servoRight.writeMicroseconds(1500);
-
-    // Find initial distances
-    distanceL = find_distance_left();
-    distanceF = find_distance_front();
-    distanceR = find_distance_right();
+  servoLeft.attach(13);
+  servoRight.attach(12);
+  
+  pinMode(IR_LED_Right, OUTPUT);
+  pinMode(IR_LED_Left, OUTPUT);
+  pinMode(IR_LED_Front, OUTPUT);
+  pinMode(Sensor_Left, INPUT);
+  pinMode(Sensor_Right, INPUT);
+  pinMode(Sensor_Front, INPUT);
+  pinMode(Sensor_LED_Right, OUTPUT);
+  pinMode(Sensor_LED_Left, OUTPUT);
+  pinMode(Sensor_LED_Front, OUTPUT);
+  servoLeft.writeMicroseconds(1500);
+  servoRight.writeMicroseconds(1500);
+  count = 0;
 }
 
+void loop() {
+    distance_left = find_distance_left();
+    distance_right = find_distance_right();
+    distance_front = find_distance_front();
 
-void loop()
-{
-    // If all three walls are within 8
-    if (find_distance_front() <= 8 &&
-        find_distance_left() <= 8 &&
-        find_distance_right() <= 8)
+    if (find_distance_left() <= 4 && find_distance_front() == 12 && 8 <= find_distance_right() < 10 && count == 0) { //left parallel
+      Serial.println("left parallel");
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      Serial.println("Parallel to left wall");
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(1000);
+      count += 1;
+    }
+
+    else if (6 <= find_distance_left() < 11 && find_distance_front() == 12 && find_distance_right() <= 4 && count == 0) { //right parallel
+      Serial.println("right parallel");
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(1000);
+      count += 1;
+    }
+
+    else if (find_distance_right() <= 6 && find_distance_front() <= 12 && find_distance_left() == 11 && count == 0) { //30 degree to right wall
+      Serial.println("30 degrees to right wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, LOW);
+      digitalWrite(Sensor_LED_Right, LOW);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(370); // change the delay so it turns properly
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(1000);
+      count += 1;
+    }
+
+    else if (find_distance_left() <= 4 && find_distance_front() <= 12 && find_distance_right() >= 8 && count == 0) { //30 degree to left wall
+      Serial.println("30 degrees to left wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      Serial.println("30 degrees to left wall");
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(320); // change the delay so it turns properly
+      count += 1;
+    }
+
+    else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12 && count == 0) //forwards
     {
-        // Turn on sensor LEDs
+      Serial.println("Forwards");
+      servoLeft.writeMicroseconds(1568); 
+      servoRight.writeMicroseconds(1432);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      count += 1;
+    }
+
+
+    else if (distance_left == 11 && distance_right < 10 && distance_front <= 12 && count == 1) //left turn
+    {
+      Serial.println("left turn");
+      delay(1000);
+      servoLeft.writeMicroseconds(1500);
+      servoRight.writeMicroseconds(1500);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(830);
+      servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+      servoRight.writeMicroseconds(1432);
+      delay(2000);
+    }
+
+  else if (distance_left < 11 && distance_right == 10 && distance_front <= 12 && count == 1) //right turn
+    {
+      Serial.println("right turn");
+      delay(1025);
+      servoLeft.writeMicroseconds(1500);
+      servoRight.writeMicroseconds(1500);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(780); //might need to change this value
+      servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+      servoRight.writeMicroseconds(1432);
+      delay(2000);
+    }
+  
+    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && count == 1) { //right adjust
+        digitalWrite(Sensor_LED_Right, HIGH);
+        digitalWrite(Sensor_LED_Left, LOW);
+        digitalWrite(Sensor_LED_Front, LOW);
+        servoLeft.writeMicroseconds(1568);
+        servoRight.writeMicroseconds(1345);
+        delay(15);
+    }
+    
+    else if (distance_left <= 2 && distance_front == 12 && 8 <= distance_right < 10 && count == 1) { //left adjust
+        digitalWrite(Sensor_LED_Right, LOW);
+        digitalWrite(Sensor_LED_Left, HIGH);
+        digitalWrite(Sensor_LED_Front, LOW);
+        servoLeft.writeMicroseconds(1600);
+        servoRight.writeMicroseconds(1432);
+        delay(15);
+    }
+
+    else if (distance_left <= 2.5 && distance_front == 12 && 6 <= distance_right < 10 && count == 2) { //left adjust
+        digitalWrite(Sensor_LED_Right, LOW);
+        digitalWrite(Sensor_LED_Left, HIGH);
+        digitalWrite(Sensor_LED_Front, LOW);
+        servoLeft.writeMicroseconds(1600);
+        servoRight.writeMicroseconds(1432);
+        delay(15);
+    }
+    
+    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && count == 2) { //right adjust
+        digitalWrite(Sensor_LED_Right, HIGH);
+        digitalWrite(Sensor_LED_Left, LOW);
+        digitalWrite(Sensor_LED_Front, LOW);
+        servoLeft.writeMicroseconds(1568);
+        servoRight.writeMicroseconds(1345);
+        delay(15);
+    }
+
+
+    else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12 && count != 0) //forwards
+    {
+      Serial.println("Forwards");
+      servoLeft.writeMicroseconds(1568); 
+      servoRight.writeMicroseconds(1432);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+    }
+
+    else if (distance_left == 11 && distance_right == 10 && distance_front >= 10) //nothing detected stop
+  {
+    Serial.println("stopped");
+    servoLeft.writeMicroseconds(1500);
+    servoRight.writeMicroseconds(1500);
+    digitalWrite(Sensor_LED_Left, LOW);
+    digitalWrite(Sensor_LED_Right, LOW);
+    digitalWrite(Sensor_LED_Front, LOW);
+  }
+    
+
+    // Dead end, does 180 turn then moves forward
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1)
+    {
+      if ((distance_left +0.5) < distance_right) {
+        Serial.println("180 degree turn");
+        servoLeft.writeMicroseconds(1500); //stops for 700ms
+        servoRight.writeMicroseconds(1500);
+        digitalWrite(Sensor_LED_Right, LOW);
+        digitalWrite(Sensor_LED_Left, HIGH);
+        digitalWrite(Sensor_LED_Front, LOW);
+        delay(1000);
         digitalWrite(Sensor_LED_Right, HIGH);
         digitalWrite(Sensor_LED_Left, HIGH);
         digitalWrite(Sensor_LED_Front, HIGH);
-
-        // Travel straight
-        servoLeft.writeMicroseconds(1568);
+        servoLeft.writeMicroseconds(1450); //180 degree turn
+        servoRight.writeMicroseconds(1450);
+        delay(1740);
+        servoLeft.writeMicroseconds(1568); // goes forwards for half a second
         servoRight.writeMicroseconds(1432);
-    }
+        delay(500);
+      }
 
-    // If front is close and right side is open
-    if (find_distance_front() <= 5 &&
-        find_distance_right() >= 8)
-    {
-        // Turn right
-        servoLeft.writeMicroseconds(1550);
+      else {
+        Serial.println("180 degree turn");
+        servoLeft.writeMicroseconds(1500); //stops for 700ms
+        servoRight.writeMicroseconds(1500);
+        digitalWrite(Sensor_LED_Right, LOW);
+        digitalWrite(Sensor_LED_Left, HIGH);
+        digitalWrite(Sensor_LED_Front, LOW);
+        delay(1000);
+        digitalWrite(Sensor_LED_Right, HIGH);
+        digitalWrite(Sensor_LED_Left, HIGH);
+        digitalWrite(Sensor_LED_Front, HIGH);
+        servoLeft.writeMicroseconds(1550); //180 degree turn
         servoRight.writeMicroseconds(1550);
-
-        delay(830);
-
-        // Travel straight
-        servoLeft.writeMicroseconds(1568);
+        delay(1600); //might need to change this value
+        servoLeft.writeMicroseconds(1568); // goes forwards for half a second
         servoRight.writeMicroseconds(1432);
+        delay(500);
+      }
+      count += 1;
     }
-}
 
+    // Dead end, does 180 turn then moves forward
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1)
+    {
+      Serial.println("180 degree turn");
+      servoLeft.writeMicroseconds(1500); //stops for 700ms
+      servoRight.writeMicroseconds(1500);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(1000);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1550); //180 degree turn
+      servoRight.writeMicroseconds(1550);
+      delay(1660); //might need to change this value
+      servoLeft.writeMicroseconds(1568); // goes forwards for half a second
+      servoRight.writeMicroseconds(1432);
+      delay(500);
+    }
+
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 2)
+    {
+      servoLeft.writeMicroseconds(1500); //stops for 700ms
+      servoRight.writeMicroseconds(1500);
+      delay(10000);
+    }
+
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 2) {
+      servoLeft.writeMicroseconds(1500); //stops for 700ms
+      servoRight.writeMicroseconds(1500);
+      delay(10000);
+    }
+
+    else
+}
 
 int find_distance_left()
 {
-    tone(IR_LED_Left, 65000);
+  tone(IR_LED_Left, 65000);
+  delay(1);
+  ir_valL = digitalRead(Sensor_Left);
+  if (ir_valL == 0) { distanceL = 2; }
+  else
+  {
+    tone(IR_LED_Left, 55000);
     delay(1);
     ir_valL = digitalRead(Sensor_Left);
-
-    if (ir_valL == 0)
-    {
-        distanceL = 2;
-    }
+    if (ir_valL == 0) { distanceL = 3; }
     else
     {
-        tone(IR_LED_Left, 55000);
+      tone(IR_LED_Left, 45000);
+      delay(1);
+      ir_valL = digitalRead(Sensor_Left);
+      if (ir_valL == 0) { distanceL = 4; }
+      else
+      {
+        tone(IR_LED_Left, 44000);
         delay(1);
         ir_valL = digitalRead(Sensor_Left);
-
-        if (ir_valL == 0)
-        {
-            distanceL = 3;
-        }
+        if (ir_valL == 0) { distanceL = 5; }
         else
         {
-            tone(IR_LED_Left, 45000);
+          tone(IR_LED_Left, 40000);
+          delay(1);
+          ir_valL = digitalRead(Sensor_Left);
+          if (ir_valL == 0) { distanceL = 6; }
+          else 
+          { 
+            tone(IR_LED_Left, 39000);
             delay(1);
             ir_valL = digitalRead(Sensor_Left);
-
-            if (ir_valL == 0)
-            {
-                distanceL = 4;
-            }
+            if (ir_valL == 0) { distanceL = 8; }
             else
             {
-                tone(IR_LED_Left, 44000);
-                delay(1);
-                ir_valL = digitalRead(Sensor_Left);
-
-                if (ir_valL == 0)
-                {
-                    distanceL = 5;
-                }
-                else
-                {
-                    tone(IR_LED_Left, 40000);
-                    delay(1);
-                    ir_valL = digitalRead(Sensor_Left);
-
-                    if (ir_valL == 0)
-                    {
-                        distanceL = 6;
-                    }
-                    else
-                    {
-                        tone(IR_LED_Left, 39000);
-                        delay(1);
-                        ir_valL = digitalRead(Sensor_Left);
-
-                        if (ir_valL == 0)
-                        {
-                            distanceL = 8;
-                        }
-                        else
-                        {
-                            tone(IR_LED_Left, 38000);
-                            delay(1);
-                            ir_valL = digitalRead(Sensor_Left);
-
-                            if (ir_valL == 0)
-                            {
-                                distanceL = 10;
-                            }
-                            else
-                            {
-                                distanceL = 11;
-                            }
-                        }
-                    }
-                }
+              tone(IR_LED_Left, 38000);
+              delay(1);
+              ir_valL = digitalRead(Sensor_Left);
+              if (ir_valL == 0) { distanceL = 10; }
+              else { distanceL = 11;}
             }
+          } 
         }
+      }
     }
+  }
 
-    noTone(IR_LED_Left);
-
-    return distanceL;
+  noTone(IR_LED_Left);
+  return distanceL;
 }
 
-
-int find_distance_right()
+int find_distance_right() //done
 {
-    tone(IR_LED_Right, 65000);
+  tone(IR_LED_Right, 65000);
+  delay(1);
+  ir_valR = digitalRead(Sensor_Right);
+  if (ir_valR == 0) { distanceR = 2; }
+  else
+  {
+    tone(IR_LED_Right, 55000);
     delay(1);
     ir_valR = digitalRead(Sensor_Right);
-
-    if (ir_valR == 0)
-    {
-        distanceR = 2;
-    }
+    if (ir_valR == 0) { distanceR = 3; }
     else
     {
-        tone(IR_LED_Right, 55000);
+      tone(IR_LED_Right, 45000);
+      delay(1);
+      ir_valR = digitalRead(Sensor_Right);
+      if (ir_valR == 0) { distanceR = 4; }
+      else
+      {
+        tone(IR_LED_Right, 43000);
         delay(1);
         ir_valR = digitalRead(Sensor_Right);
-
-        if (ir_valR == 0)
-        {
-            distanceR = 3;
-        }
+        if (ir_valR == 0) { distanceR = 5; }
         else
         {
-            tone(IR_LED_Right, 45000);
-            delay(1);
-            ir_valR = digitalRead(Sensor_Right);
-
-            if (ir_valR == 0)
+          tone(IR_LED_Right, 42000);
+          delay(1);
+          ir_valR = digitalRead(Sensor_Right);
+          if (ir_valR == 0) { distanceR = 6; }
+          else 
+          {
+            tone(IR_LED_Right, 40000);
+          	delay(1);
+          	ir_valR = digitalRead(Sensor_Right);
+          	if (ir_valR == 0) { distanceR = 7; }
+            else 
             {
-                distanceR = 4;
-            }
-            else
-            {
-                tone(IR_LED_Right, 43000);
+              tone(IR_LED_Right, 39000);
+              delay(1);
+              ir_valR = digitalRead(Sensor_Right);
+              if (ir_valR == 0) { distanceR = 8; }
+              else 
+              {
+                tone(IR_LED_Right, 38000);
                 delay(1);
                 ir_valR = digitalRead(Sensor_Right);
-
-                if (ir_valR == 0)
-                {
-                    distanceR = 5;
-                }
-                else
-                {
-                    tone(IR_LED_Right, 42000);
-                    delay(1);
-                    ir_valR = digitalRead(Sensor_Right);
-
-                    if (ir_valR == 0)
-                    {
-                        distanceR = 6;
-                    }
-                    else
-                    {
-                        tone(IR_LED_Right, 40000);
-                        delay(1);
-                        ir_valR = digitalRead(Sensor_Right);
-
-                        if (ir_valR == 0)
-                        {
-                            distanceR = 7;
-                        }
-                        else
-                        {
-                            tone(IR_LED_Right, 39000);
-                            delay(1);
-                            ir_valR = digitalRead(Sensor_Right);
-
-                            if (ir_valR == 0)
-                            {
-                                distanceR = 8;
-                            }
-                            else
-                            {
-                                tone(IR_LED_Right, 38000);
-                                delay(1);
-                                ir_valR = digitalRead(Sensor_Right);
-
-                                if (ir_valR == 0)
-                                {
-                                    distanceR = 9;
-                                }
-                                else
-                                {
-                                    distanceR = 10;
-                                }
-                            }
-                        }
-                    }
-                }
+                if (ir_valR == 0) { distanceR = 9; }
+                else {distanceR = 10;}
+                 
+            
+              }
             }
+          }
         }
+      }
     }
+  }
 
-    noTone(IR_LED_Right);
-
-    return distanceR;
+  noTone(IR_LED_Right);
+  return distanceR;
 }
+  
 
-
-int find_distance_front()
+int find_distance_front() //done
 {
-    tone(IR_LED_Front, 65000);
+  tone(IR_LED_Front, 65000);
+  delay(1);
+  ir_valF = digitalRead(Sensor_Front);
+  if (ir_valF == 0) { distanceF = 2; }
+  else
+  {
+    tone(IR_LED_Front, 55000);
     delay(1);
     ir_valF = digitalRead(Sensor_Front);
-
-    if (ir_valF == 0)
-    {
-        distanceF = 2;
-    }
+    if (ir_valF == 0) { distanceF = 3; }
     else
     {
-        tone(IR_LED_Front, 55000);
+      tone(IR_LED_Front, 45000);
+      delay(1);
+      ir_valF = digitalRead(Sensor_Front);
+      if (ir_valF == 0) { distanceF = 4; }
+      else
+      {
+        tone(IR_LED_Front, 43000);
         delay(1);
         ir_valF = digitalRead(Sensor_Front);
-
-        if (ir_valF == 0)
-        {
-            distanceF = 3;
-        }
+        if (ir_valF == 0) { distanceF = 5; }
         else
         {
-            tone(IR_LED_Front, 45000);
-            delay(1);
-            ir_valF = digitalRead(Sensor_Front);
-
-            if (ir_valF == 0)
+          tone(IR_LED_Front, 42000);
+          delay(1);
+          ir_valF = digitalRead(Sensor_Front);
+          if (ir_valF == 0) { distanceF = 6; }
+          else 
+          {
+            tone(IR_LED_Front, 41000);
+          	delay(1);
+          	ir_valF = digitalRead(Sensor_Front);
+          	if (ir_valF == 0) { distanceF = 7; }
+          	else 
             {
-                distanceF = 4;
-            }
-            else
-            {
-                tone(IR_LED_Front, 43000);
+              tone(IR_LED_Front, 40000);
+          	  delay(1);
+          	  ir_valF = digitalRead(Sensor_Front);
+          	  if (ir_valF == 0) { distanceF = 8; }
+              else {
+                tone(IR_LED_Front, 39000);
                 delay(1);
                 ir_valF = digitalRead(Sensor_Front);
-
-                if (ir_valF == 0)
+                if (ir_valF == 0) { distanceF = 10; }
+                else 
                 {
-                    distanceF = 5;
+                  tone(IR_LED_Front, 38000);
+                  delay(1);
+                  ir_valF = digitalRead(Sensor_Front);
+                  if (ir_valF == 0) { distanceF = 11; }
+                  else {distanceF = 12;}
                 }
-                else
-                {
-                    tone(IR_LED_Front, 42000);
-                    delay(1);
-                    ir_valF = digitalRead(Sensor_Front);
-
-                    if (ir_valF == 0)
-                    {
-                        distanceF = 6;
-                    }
-                    else
-                    {
-                        tone(IR_LED_Front, 41000);
-                        delay(1);
-                        ir_valF = digitalRead(Sensor_Front);
-
-                        if (ir_valF == 0)
-                        {
-                            distanceF = 7;
-                        }
-                        else
-                        {
-                            tone(IR_LED_Front, 40000);
-                            delay(1);
-                            ir_valF = digitalRead(Sensor_Front);
-
-                            if (ir_valF == 0)
-                            {
-                                distanceF = 8;
-                            }
-                            else
-                            {
-                                tone(IR_LED_Front, 39000);
-                                delay(1);
-                                ir_valF = digitalRead(Sensor_Front);
-
-                                if (ir_valF == 0)
-                                {
-                                    distanceF = 10;
-                                }
-                                else
-                                {
-                                    tone(IR_LED_Front, 38000);
-                                    delay(1);
-                                    ir_valF = digitalRead(Sensor_Front);
-
-                                    if (ir_valF == 0)
-                                    {
-                                        distanceF = 11;
-                                    }
-                                    else
-                                    {
-                                        distanceF = 12;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+              }
             }
+          }
         }
+      }
     }
+  }
 
-    noTone(IR_LED_Front);
-
-    return distanceF;
+  noTone(IR_LED_Front);
+  return distanceF;
 }
