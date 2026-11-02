@@ -28,6 +28,7 @@ int distance_left = 0;
 int distance_right = 0;
 int distance_front = 0;
 int count = 0;
+int left = 1;
 
 void setup()
 {
@@ -48,6 +49,7 @@ void setup()
   servoLeft.writeMicroseconds(1500);
   servoRight.writeMicroseconds(1500);
   count = 0;
+  left = 0;
 }
 
 void loop() {
@@ -55,7 +57,195 @@ void loop() {
     distance_right = find_distance_right();
     distance_front = find_distance_front();
 
-    if (distance_left == 11 && distance_right < 10 && distance_front <= 12) //left turn
+    if (find_distance_left() <= 4 && find_distance_front() == 12 && 8 <= find_distance_right() < 10 && count == 0) { //left parallel
+      Serial.println("left parallel");
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      Serial.println("Parallel to left wall");
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(1000);
+      count += 1;
+    }
+
+    else if (6 <= find_distance_left() < 11 && find_distance_front() == 12 && find_distance_right() <= 3 && count == 0) { //right parallel
+      Serial.println("right parallel");
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(1000);
+      count += 1;
+    }
+
+    else if (find_distance_right() <= 6 && find_distance_front() <= 12 && find_distance_left() == 11 && count == 0) { //30 degree to right wall
+      Serial.println("30 degrees to right wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, LOW);
+      digitalWrite(Sensor_LED_Right, LOW);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(370); // change the delay so it turns properly
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(100);
+      count += 1;
+    }
+
+    else if (find_distance_left() <= 4 && find_distance_front() <= 12 && find_distance_right() >= 8 && count == 0) { //30 degree to left wall
+      Serial.println("30 degrees to left wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      Serial.println("30 degrees to left wall");
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(300); // change the delay so it turns properly
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(100);
+      count += 1;
+    }
+
+    else if (find_distance_right() <= 6 && find_distance_front() == 12 && find_distance_left() == 11 && count == 0) { //30 degree to right wall
+      Serial.println("30 degrees to right wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, LOW);
+      digitalWrite(Sensor_LED_Right, LOW);
+      servoLeft.writeMicroseconds(1450); //turn
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(340); // change the delay so it turns properly
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, LOW);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(100);
+      count += 1;
+    }
+
+    
+
+    else if (find_distance_left() <= 4 && find_distance_front() <= 12 && find_distance_right() >= 8 && count == 0) { //30 degree to left wall
+      Serial.println("30 degrees to left wall");
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      Serial.println("30 degrees to left wall");
+      servoLeft.writeMicroseconds(1550); //turn
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Front, HIGH);
+      delay(300); // change the delay so it turns properly
+      servoLeft.writeMicroseconds(1550);
+      servoRight.writeMicroseconds(1550);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      delay(150);
+      servoLeft.writeMicroseconds(1568);
+      servoRight.writeMicroseconds(1432);
+      delay(1000);
+      servoLeft.writeMicroseconds(1450);
+      servoRight.writeMicroseconds(1450);
+      delay(150);
+      servoLeft.writeMicroseconds(1436);
+      servoRight.writeMicroseconds(1558);
+      delay(100);
+      count += 1;
+    }
+
+
+    else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12 && count == 0) //forwards
+    {
+      Serial.println("Forwards");
+      servoLeft.writeMicroseconds(1568); 
+      servoRight.writeMicroseconds(1432);
+      digitalWrite(Sensor_LED_Left, HIGH);
+      digitalWrite(Sensor_LED_Right, HIGH);
+      digitalWrite(Sensor_LED_Front, LOW);
+      count += 1;
+    }
+
+
+    else if (distance_left == 11 && distance_right < 10 && distance_front <= 12 && count >= 1) //left turn
     {
       Serial.println("left turn");
       delay(1000);
@@ -73,10 +263,11 @@ void loop() {
       delay(830);
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
-      delay(2000);
+      delay(1500);
+      left = 0;
     }
 
-  else if (distance_left < 11 && distance_right == 10 && distance_front <= 12) //right turn
+  else if (distance_left < 11 && distance_right == 10 && distance_front <= 12 && count >= 1) //right turn
     {
       Serial.println("right turn");
       delay(1025);
@@ -94,47 +285,50 @@ void loop() {
       delay(780); //might need to change this value
       servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
       servoRight.writeMicroseconds(1432);
-      delay(2000);
+      delay(1500);
+      left += 1;
     }
   
-    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && count == 0) { //right adjust
+    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6.5 && left > 0) { //right adjust
         digitalWrite(Sensor_LED_Right, HIGH);
         digitalWrite(Sensor_LED_Left, LOW);
         digitalWrite(Sensor_LED_Front, LOW);
         servoLeft.writeMicroseconds(1568);
         servoRight.writeMicroseconds(1345);
-        delay(15);
+        delay(5);
     }
     
-    else if (distance_left <= 2 && distance_front == 12 && 8 <= distance_right < 10 && count == 0) { //left adjust
+    else if (distance_left <= 2 && distance_front == 12 && 8 <= distance_right < 10 && left > 0) { //left adjust
         digitalWrite(Sensor_LED_Right, LOW);
         digitalWrite(Sensor_LED_Left, HIGH);
         digitalWrite(Sensor_LED_Front, LOW);
         servoLeft.writeMicroseconds(1600);
         servoRight.writeMicroseconds(1432);
-        delay(15);
+        delay(5);
     }
 
-    else if (distance_left <= 2.5 && distance_front == 12 && 6 <= distance_right < 10 && count == 1) { //left adjust
-        digitalWrite(Sensor_LED_Right, LOW);
-        digitalWrite(Sensor_LED_Left, HIGH);
-        digitalWrite(Sensor_LED_Front, LOW);
-        servoLeft.writeMicroseconds(1600);
-        servoRight.writeMicroseconds(1432);
-        delay(15);
-    }
-    
-    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6 && count == 1) { //right adjust
+    else if (6 <= distance_left < 11 && distance_front == 12 && distance_right <= 6.5 && left == 0) { //right adjust
         digitalWrite(Sensor_LED_Right, HIGH);
         digitalWrite(Sensor_LED_Left, LOW);
         digitalWrite(Sensor_LED_Front, LOW);
         servoLeft.writeMicroseconds(1568);
         servoRight.writeMicroseconds(1345);
-        delay(15);
+        delay(5);
     }
 
+    else if (distance_left <= 2.5 && distance_front == 12 && 6 <= distance_right < 10 && left == 0) { //left adjust
+        digitalWrite(Sensor_LED_Right, LOW);
+        digitalWrite(Sensor_LED_Left, HIGH);
+        digitalWrite(Sensor_LED_Front, LOW);
+        servoLeft.writeMicroseconds(1600);
+        servoRight.writeMicroseconds(1432);
+        delay(5);
+    }
+    
+    
 
-    else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12) //forwards
+
+    else if (distance_left != 11 && distance_right != 10 && -1 <= distance_left - distance_right <= 1 && distance_front == 12 && count != 0) //forwards
     {
       Serial.println("Forwards");
       servoLeft.writeMicroseconds(1568); 
@@ -156,7 +350,7 @@ void loop() {
     
 
     // Dead end, does 180 turn then moves forward
-    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 0)
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1)
     {
       if ((distance_left +0.5) < distance_right) {
         Serial.println("180 degree turn");
@@ -199,7 +393,7 @@ void loop() {
     }
 
     // Dead end, does 180 turn then moves forward
-    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 0)
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1)
     {
       Serial.println("180 degree turn");
       servoLeft.writeMicroseconds(1500); //stops for 700ms
@@ -219,18 +413,23 @@ void loop() {
       delay(500);
     }
 
-    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1)
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 2)
     {
       servoLeft.writeMicroseconds(1500); //stops for 700ms
       servoRight.writeMicroseconds(1500);
       delay(10000);
     }
 
-    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1)
-    {
+    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 2) {
       servoLeft.writeMicroseconds(1500); //stops for 700ms
       servoRight.writeMicroseconds(1500);
       delay(10000);
+    }
+
+    else {
+      servoLeft.writeMicroseconds(1568); //moves forwards before checking where it is again
+      servoRight.writeMicroseconds(1432);
+      delay(5);
     }
 }
 
