@@ -225,12 +225,6 @@ void loop() {
       servoRight.writeMicroseconds(1500);
       delay(10000);
     }
-
-    else if (distance_left != 11 && distance_right != 10 && -3 <= distance_left - distance_right <= 3 && distance_front < 10 && count == 1) {
-      servoLeft.writeMicroseconds(1500); //stops for 700ms
-      servoRight.writeMicroseconds(1500);
-      delay(10000);
-    }
 }
 
 int find_distance_left()
